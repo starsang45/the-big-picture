@@ -17,6 +17,6 @@ const nasaSchema=  new Schema({
 
 const NasaAuth = mongoose.model('nasaAut', nasaSchema)
 
-module.export = NasaAuth
+module.export = {NasaAuth}
 //mongoose.model('nasa', nasaSchema)//nasaAuth
 

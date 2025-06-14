@@ -7,21 +7,38 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+
+mongoose.connect('mongodb://localhost:27017/myapp', {//where is the database m
+});
+
+// mongoose.connection.once('open', () => {
+//   console.log('Connected to Database');
+// });
+
 app.use(express.static('./dist'));
 app.use(express.json());
-
 
 
 console.log('nasaController:', nasaController);
 console.log('getImageOfDay:', typeof nasaController.getImageOfDay);
 
+// app.get('/api/nasa/apod', nasaController.getImageOfDay, (req, res) =>
+//   res.status(200).json({
+//     log:'Nasa data fetch succesfully',
+//     data: res.locals.nasaData
+//   })
+// );
+
+//get request for just the image
 app.get('/api/nasa/apod', nasaController.getImageOfDay, (req, res) =>
   res.status(200).json({
-    log:'Nasa data fetch succesfully',
-    data: res.locals.nasaData
+    log: 'NASA data fetch successfully',
+    imageUrl: res.locals.nasaData.url  // Just the image URL
   })
 );
 
+app.post('/api/nasa/apod', nasaController.getImageOfDay,(req,res)=>
+res.status(200).json({data: res.locals.data}))
 
 
 

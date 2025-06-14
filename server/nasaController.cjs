@@ -5,7 +5,9 @@ const NasaApiKey = 'k5Hkmgh4CmhCdPlUckSgnZyjDdNUw5yeXKSuK70X'
 const nasaController = {
 async getImageOfDay (req, res, next ){
     try{
-        const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NasaApiKey}`)
+       const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NasaApiKey}`)
+         //const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY`)
+
         if(!response.ok){
             throw{
                 log:'Error on fetching data',
@@ -34,4 +36,4 @@ async getImageOfDay (req, res, next ){
 }
 }
 
-module.exports = {nasaController};
+module.exports = nasaController;
