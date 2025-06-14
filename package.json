@@ -3,13 +3,13 @@
   "name": "scratch-project-axolotl",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server.cjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "node server/server.js"
+    "start": "node server/server.cjs"
   },
   "keywords": [],
   "author": "Yuri Sabogal, Christian Sellers, Victor Kim",
@@ -17,6 +17,8 @@
   "dependencies": {
     "@vitejs/plugin-react": "^4.5.2",
     "build": "^0.1.4",
+    "express": "^5.1.0",
+    "mongoose": "^8.15.2",
     "react-dom": "^19.1.0",
     "vite": "^6.3.5"
   }
