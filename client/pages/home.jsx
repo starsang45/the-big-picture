@@ -30,7 +30,7 @@ const HomePage = () => {
   }, []);
 
 
-  // Show a custom loading image while data is being fetched(loading)
+  // Show a custom loading image while data is being fetched(loading) => conditional rendering
   if (!nasa) {
     return (
       <div style={{ textAlign: 'center', paddingTop: '2rem' }}>
