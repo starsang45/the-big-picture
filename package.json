@@ -1,0 +1,21 @@
+{
+  "name": "scratch-project-axolotl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node server/server.js"
+  },
+  "keywords": [],
+  "author": "Yuri Sabogal, Christian Sellers, Victor Kim",
+  "license": "ISC",
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.5.2",
+    "build": "^0.1.4",
+    "vite": "^6.3.5"
+  }
+}
