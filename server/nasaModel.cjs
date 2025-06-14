@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
+const { SassList } = require('sass');
 const schema = mongoose.Schema;
 
 const nasaSchema=  new Schema({
     username:{
         type: string,
         requires: true,
+        //unique user name with findonein controller
+       // look into hashing and Salt
     },
     password:{
         type :number,

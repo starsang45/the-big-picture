@@ -8,7 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 
-mongoose.connect('mongodb://localhost:27017/myapp', {//where is the database m
+mongoose.connect('mongodb://localhost:27017/scratch-project-axolotl', {//where is the database m
 });
 
 // mongoose.connection.once('open', () => {
@@ -37,8 +37,12 @@ app.get('/api/nasa/apod', nasaController.getImageOfDay, (req, res) =>
   })
 );
 
-app.post('/api/nasa/apod', nasaController.getImageOfDay,(req,res)=>
-res.status(200).json({data: res.locals.data}))
+// app.post('/api/nasa/apod', nasaController.getImageOfDay,(req,res)=>
+// res.status(200).json({data: res.locals.data}))
+
+// post to save favorites depending on number of favorite to a numberi give .
+//rout to request the length of favortire images and actial image.
+//look to stash from the past in mango db
 
 
 
