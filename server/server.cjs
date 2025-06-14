@@ -11,15 +11,17 @@ app.use(express.static('./dist'));
 app.use(express.json());
 
 
-app.get('/', nasaController, (req, res) =>
-  res.status(200).json()
+
+console.log('nasaController:', nasaController);
+console.log('getImageOfDay:', typeof nasaController.getImageOfDay);
+
+app.get('/api/nasa/apod', nasaController.getImageOfDay, (req, res) =>
+  res.status(200).json({
+    log:'Nasa data fetch succesfully',
+    data: res.locals.nasaData
+  })
 );
 
-
-// for image
-
-
-// got the API key = k5Hkmgh4CmhCdPlUckSgnZyjDdNUw5yeXKSuK70X
 
 
 
