@@ -1,4 +1,5 @@
 {
+  "type":"module",
   "name": "scratch-project-axolotl",
   "version": "1.0.0",
   "description": "",
@@ -18,6 +19,7 @@
     "build": "^0.1.4",
     "express": "^5.1.0",
     "mongoose": "^8.15.2",
+    "react-dom": "^19.1.0",
     "vite": "^6.3.5"
   }
 }
