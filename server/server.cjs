@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const mongoose = require('mongoose');
 const nasaController = require('./nasaController.cjs');
 
 const app = express();
@@ -10,20 +11,20 @@ app.use(express.static('./dist'));
 app.use(express.json());
 
 
-app.get('/', middleware, (req, res) =>
-  res.status(200).json(res.locals.student)
+app.get('/', nasaController, (req, res) =>
+  res.status(200).json()
 );
 
 
 // for image
 
 
+// got the API key = k5Hkmgh4CmhCdPlUckSgnZyjDdNUw5yeXKSuK70X
 
 
 
 
-
-
+//global error handler
 app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',

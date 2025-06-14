@@ -1,10 +1,19 @@
 const nasa = require('./')
 
-const nasaController = {
+
+const NasaApiKey = 'k5Hkmgh4CmhCdPlUckSgnZyjDdNUw5yeXKSuK70X'
+
+const getImageOfDay = async((req, res)=>{
+    try{
 
 
-    
-}
 
 
-module.export = nasaController;
+    }catch(error){
+
+    }
+
+}) 
+
+
+module.export = {getImageOfDay};
