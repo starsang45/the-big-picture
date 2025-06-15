@@ -11,7 +11,7 @@ const App = () => {
     <BrowserRouter> {/* allows us to traverse the different pages while still staying in our app without having to make calls to the backend */}
       <Routes> {/* this defines the different pages we are going to be visiting without interrupting the code around it */}
         <Route path='/' element={<Signin />} /> {/* signin page nav */}
-        <Route path='/signup' element={<Signup />} /> {/* signup page nav */}
+        <Route path='/signup' element={<Signup />} /> signup page nav
         <Route path='/home' element={<Home />} /> {/* home page nav */}
         <Route path='/favorites' element={<Favs/>}/> {/* favorites page nav */} 
       </Routes>
