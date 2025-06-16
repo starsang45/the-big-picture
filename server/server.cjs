@@ -1,33 +1,194 @@
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
+const session = require('express-session'); 
+const MongoStore = require('connect-mongo')
 const nasaController = require('./nasaController.cjs');
-
+const  NasaAuth  = require('./models/nasaModel');
 const app = express();
-
 const PORT = process.env.PORT || 3000;
-
-
+//connectin to mongoo
 mongoose.connect('mongodb://localhost:27017/scratch-project-axolotl', {//where is the database m
 });
 
-// mongoose.connection.once('open', () => {
-//   console.log('Connected to Database');
-// });
+mongoose.connection.once('open', () => {
+  console.log('Connected to Database');
+});
+
+// const uri =mongodb+srv:yurisabogal:4YDRL7MLafXCsMp1@cluster0.qdx1azo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+//sessionconfiguration 
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'nasa-app-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: 'mongodb://localhost:27017/scratch-project-axolotl',
+        collectionName: 'sessions'
+    }),
+    // not sure about these cookies
+    cookie: {
+        secure: false,
+        maxAge: 24 * 60 * 60 * 1000,
+        httpOnly: true
+    }
+}));
 
 app.use(express.static('./dist'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
 
 console.log('nasaController:', nasaController);
 console.log('getImageOfDay:', typeof nasaController.getImageOfDay);
 
-// app.get('/api/nasa/apod', nasaController.getImageOfDay, (req, res) =>
-//   res.status(200).json({
-//     log:'Nasa data fetch succesfully',
-//     data: res.locals.nasaData
-//   })
-// );
+const requireAuth = (req, res, next) => {
+    if (req.session.userId) {
+        next();
+    } else {
+        return res.status(401).json({ 
+            error: 'Authentication required',
+            message: 'Please login to access this resource'
+        });
+    }
+};
+
+const optionalAuth = (req, res, next) => {
+    if (req.session.userId) {
+        req.user = { id: req.session.userId, username: req.session.username };
+    }
+    next();
+};
+
+app.get('/login',(req, res)=>{
+  if(res.ression.userId){
+    res.redirect('/dashboard')
+  }res.render('login,',{
+    error: req.session.error,
+    message: req.session.message
+  })
+});
+
+//for login
+app.post('/api/auth/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        
+        if (!username || !password) {
+            return res.status(400).json({
+                success: false,
+                error: 'Username and password are required'
+            });
+        }
+        
+        const user = await NasaAuth.findByCredentials(username, password);
+        req.session.userId = user._id;
+        req.session.username = user.username;
+        res.status(200).json({
+            success: true,
+            message: 'Login successful',
+            user: {
+                id: user._id,
+                username: user.username
+            }
+        });
+        
+    } catch (error) {
+        console.error('Login error:', error.message);
+        res.status(401).json({
+            success: false,
+            error: error.message || 'Login failed'
+        });
+    }
+});
+
+
+
+
+
+//porting registration
+app.post('/api/auth/register', async (req, res) => {
+    try {
+        const { username, password} = req.body;
+        
+        if (!username || !password ) {
+            return res.status(400).json({
+                success: false,
+                error: 'All fields are required'
+            });
+        }
+        
+        if (password !== Password) {
+            return res.status(400).json({
+                success: false,
+                error: 'Passwords do not match'
+            });
+        }
+        
+        if (password.length < 5) {
+            return res.status(400).json({
+                success: false,
+                error: 'Password must be at least 6 characters long'
+            });
+        }
+        //declaring new user and saving
+        const newUser = new NasaAuth({
+            username,
+            password
+        });
+        
+        await newUser.save();
+        
+        res.status(201).json({
+            success: true,
+            message: 'Registration successful',
+            user: {
+                id: newUser._id,
+                username: newUser.username,
+              
+            }
+        });
+        
+    } catch (error) {
+        console.error('Registration error:', error);
+        
+        let errorMessage = 'Registration failed';
+        res.status(400).json({
+            success: false,
+            error: errorMessage
+        });
+    }
+});
+app.post('/api/auth/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Logout error:', err);
+            return res.status(500).json({
+                success: false,
+                error: 'Logout failed'
+            });
+        }
+        
+        res.status(200).json({
+            success: true,
+            message: 'Logout successful'
+        });
+    });
+});
+
+
+
+
+
+
+
+//get all data
+app.get('/api/nasa/apod', nasaController.getImageOfDay, (req, res) =>
+  res.status(200).json({
+    log:'Nasa data fetch succesfully',
+    data: res.locals.nasaData
+  })
+);
 
 //get request for just the image
 app.get('/api/nasa/apod', nasaController.getImageOfDay, (req, res) =>
@@ -37,15 +198,44 @@ app.get('/api/nasa/apod', nasaController.getImageOfDay, (req, res) =>
   })
 );
 
+
+
 // app.post('/api/nasa/apod', nasaController.getImageOfDay,(req,res)=>
 // res.status(200).json({data: res.locals.data}))
 
 // post to save favorites depending on number of favorite to a numberi give .
 //rout to request the length of favortire images and actial image.
 //look to stash from the past in mango db
+//get favorites
+app.get('/api/nasa/favorites', requireAuth, nasaController.getFavorites, (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Favorites retrieved successfully',
+        data: res.locals.favoritesData
+    });
+});
 
+//save favorites
+app.post('/api/nasa/favorites', requireAuth, nasaController.saveFavorites, (req, res) => {
+    res.status(201).json({
+        success: true,
+        message: 'Favorite saved successfully',
+        data: res.locals.favoriteData
+    });
+});
 
-
+app.get('/dashboard', requireAuth, async (req, res) => {
+    try {
+        const user = await NasaAuth.findById(req.session.userId).select('-password');
+        res.render('dashboard', { 
+            user: user,
+            username: user.username
+        });
+    } catch (error) {
+        console.error('Dashboard error:', error);
+        res.redirect('/login');
+    }
+});
 
 //global error handler
 app.use((err, req, res, next) => {
