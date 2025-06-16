@@ -1,7 +1,7 @@
-const NasaAuth = require('.models/nasaModel')
+const NasaAuth = require('./models/nasaModel')
 
 
-const NasaApiKey = 'k5Hkmgh4CmhCdPlUckSgnZyjDdNUw5yeXKSuK70X'
+const NasaApiKey = process.env.NASA_API_KEY || 'k5Hkmgh4CmhCdPlUckSgnZyjDdNUw5yeXKSuK70X';
 
 //image request
 const nasaController = {
@@ -68,7 +68,8 @@ async saveFavorites(req,res,next){
                 explanation,
                 date,
                 media_type: media_type || 'image',
-                username: req.session.username
+                username: req.session.username,
+                savedAt: new Date().toISOString(),
             };
             
             next();
@@ -77,8 +78,6 @@ async saveFavorites(req,res,next){
             console.error('NASA Controller Save Favorite Error:', error);
             next(error);
         }
-
-    
 },
 // get favorites 
     async getFavorites(req, res, next) {
@@ -108,27 +107,38 @@ async saveFavorites(req,res,next){
     },
 
 
-}
+// dont need this did it on the server file
+//  async createUser(req, res, next) {
+//         try {
+//             const { username, password } = req.body;
 
-nasaController.createUser = (req, res, next) => {
-  const { username, password } = req.body;
-  if (!username || !password)
-    return next({
-      log: 'Missing username or password',
-      status: 400,
-      message: { err: 'an error accurded' },
-    });
-  User.create({ username, password }, (err, user) => {
-    if (err) {
-      return next({
-        log: 'error accurred in controller.verificaation',
-        status: 500,
-        message: { err: 'an error accurded' },
-      });
-    } else {
-      res.locals.user = user.id;
-      return next;
-    }
-  });
-}
+//             if (!username || !password) {
+//                 throw {
+//                     log: 'Missing required fields',
+//                     status: 400,
+//                     message: { err: 'Username and password are required' }
+//                 };
+//             }
+//             const newUser = new NasaAuth({ 
+//                 password
+//             });
+
+//             const savedUser = await newUser.save(); 
+//             res.locals.user = {
+//                 id: savedUser._id,
+//                 username: savedUser.username
+//             };
+
+//             next(); 
+
+//         } catch (error) {
+//             console.error('Create user error:', error);
+//             next({
+//                 log: 'Error occurred in createUser controller',
+//                 status: 500,
+//                 message: { err: 'User creation failed' }
+//             });
+//         }
+//     }
+};
 module.exports = nasaController;

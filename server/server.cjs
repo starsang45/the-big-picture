@@ -1,21 +1,27 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session'); 
 const MongoStore = require('connect-mongo')
 const nasaController = require('./nasaController.cjs');
-const  NasaAuth  = require('./models/nasaModel');
+const {NasaAuth}  = require('./models/nasaModel');
 const app = express();
 const PORT = process.env.PORT || 3000;
 //connectin to mongoo
-mongoose.connect('mongodb://localhost:27017/scratch-project-axolotl', {//where is the database m
-});
+// mongoose.connect('mongodb://localhost:27017/scratch-project-axolotl', {
+// });
 
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/scratch-project-axolotl';
+
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 mongoose.connection.once('open', () => {
   console.log('Connected to Database');
 });
 
-// const uri =mongodb+srv:yurisabogal:4YDRL7MLafXCsMp1@cluster0.qdx1azo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
 //sessionconfiguration 
 app.use(session({
@@ -23,7 +29,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: 'mongodb://localhost:27017/scratch-project-axolotl',
+        mongoUrl: 'MONGODB_URI',
         collectionName: 'sessions'
     }),
     // not sure about these cookies
@@ -50,7 +56,7 @@ const requireAuth = (req, res, next) => {
             error: 'Authentication required',
             message: 'Please login to access this resource'
         });
-        
+
     }
 };
 
@@ -62,9 +68,9 @@ const optionalAuth = (req, res, next) => {
 };
 
 app.get('/login',(req, res)=>{
-  if(res.ression.userId){
-    res.redirect('/dashboard')
-  }res.render('login,',{
+  if(res.session.userId){
+    return res.redirect('/dashboard')
+  }res.render(login,{
     error: req.session.error,
     message: req.session.message
   })
@@ -107,7 +113,7 @@ app.post('/api/auth/login', async (req, res) => {
 
 
 
-//porting registration
+//porting registration creating ur and pass for users
 app.post('/api/auth/register', async (req, res) => {
     try {
         const { username, password} = req.body;
@@ -115,18 +121,10 @@ app.post('/api/auth/register', async (req, res) => {
         if (!username || !password ) {
             return res.status(400).json({
                 success: false,
-                error: 'All fields are required'
+                error: 'username and password are required'
             });
         }
-        
-        if (password !== Password) {
-            return res.status(400).json({
-                success: false,
-                error: 'Passwords do not match'
-            });
-        }
-        
-        if (password.length < 5) {
+        if (password.length < 6) {
             return res.status(400).json({
                 success: false,
                 error: 'Password must be at least 6 characters long'
@@ -186,6 +184,7 @@ app.post('/api/auth/logout', (req, res) => {
 //get all data
 app.get('/api/nasa/apod', nasaController.getImageOfDay, (req, res) =>
   res.status(200).json({
+    success:true,
     log:'Nasa data fetch succesfully',
     data: res.locals.nasaData
   })

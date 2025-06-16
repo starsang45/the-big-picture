@@ -22,6 +22,18 @@ const nasaSchema=  new Schema({
 
 });
 
+nasaSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) return next();
+    
+    try {
+        const hashedPassword = await bcrypt.hash(this.password, 12);
+        this.password = hashedPassword;
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
+
 // fin user ny username
 nasaSchema.statics.findByCredentials = async function(username, password) {
     try {
