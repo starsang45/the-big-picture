@@ -1,3 +1,4 @@
+
 //Signup component
 //This component renders the signup page for the app
 //Users can create an account by entering a username and password
