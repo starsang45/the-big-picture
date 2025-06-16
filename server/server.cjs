@@ -50,6 +50,7 @@ const requireAuth = (req, res, next) => {
             error: 'Authentication required',
             message: 'Please login to access this resource'
         });
+        
     }
 };
 
