@@ -17,10 +17,11 @@ const Home = () => {
   // State to store the NASA data (title, image)
   const [nasa, setNASA] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [favorites, setFavorites] = useState(0);
+  const [favorites, setFavorites] = useState([]);
   const [imgArr, setImgArr] = useState([]);
+  const [currentPic, setCurrentPic] = useState(null);
 
-  
+  //make fetch call to find out 1) how many images we have in favorites, 2) data associated with each image
 
   // useEffect hook runs only once after component mounts
   // Fetches NASA data title and image
@@ -30,7 +31,7 @@ const Home = () => {
     fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY') //test
       .then((res) => res.json())
       .then((data) => {
-        setNASA(data);
+        setCurrentPic(data);
         setLoading(false);
       })
       .catch((err) => {
@@ -39,8 +40,70 @@ const Home = () => {
       });
   }, []);
 
+  //need to make a fetch post request to the db to save it for later use if favorited
+
+  const handleFavorite = () => {
+    fetch('/api/postFavorite', {
+      method: 'POST',
+      body: JSON.stringify(currentPic),
+      headers: new Headers({
+        'Content-Type': 'application/json; charset=UTF-8',
+      }),
+    }).then((response) => {
+      if (response.ok) {
+        throw new Error('Http error! status:', response.status);
+      }
+      setImgArr([
+        <img
+          src={currentPic.hdurl}
+          onClick={handleImgSwap(currentPic)}
+          key={currentPic.url}
+          style={{
+            minWidth: '20vw',
+            width: '30vw',
+            height: 'auto',
+            borderRadius: '10px',
+            margin: '10px',
+            cursor: 'pointer',
+            boxShadow: ' 0 4px 8px rgb(0,0,0,0.2)', //xoffset, yoffset, blur-radius, grey
+          }}
+        />,
+        ...imgArr,
+      ]);
+      console.log(imgArr);
+      return response.json();
+    });
+  };
+
+  //assuming the fetch gets back an array of objects
+  for (let i = 0; i < favorites.length; i++) {
+    //will populate the dom so we can see each individual image
+    const img = favorites[i];
+    setImgArr((el) => [
+      ...el,
+      <img
+        src={img.hdurl}
+        onClick={handleImgSwap(img)}
+        key={img.url}
+        style={{
+          width: '200px',
+          height: 'auto',
+          borderRadius: '10px',
+          margin: '10px',
+          cursor: 'pointer',
+          boxShadow: ' 0 4px 8px rgb(0,0,0,0.2)', //xoffset, yoffset, blur-radius, grey
+        }}
+      />,
+    ]);
+  }
+
+  const handleImgSwap = (imageData) => {
+    // needs to be able to change the different dom elements associated with their respective parts, so everything will be able to be interchangable
+    setCurrentPic(imageData);
+  };
+
   // Show a custom loading image while data is being fetched(loading) => conditional rendering
-  if (!nasa) {
+  if (!currentPic) {
     return (
       <div style={{ textAlign: 'center', paddingTop: '2rem' }}>
         <img
@@ -82,7 +145,7 @@ const Home = () => {
         </button>
 
         <button
-          onClick={() => navigate('/favorites')} //when clicked navigate to favorite page
+          onClick={handleFavorite} //when clicked navigate to favorite page
           style={{
             padding: '0.5rem 1rem',
             marginLeft: '0.5rem',
@@ -94,16 +157,16 @@ const Home = () => {
             cursor: 'pointer',
           }}
         >
-          Favorites
+          Favorite
         </button>
       </div>
       {/* Section 1: NASA Image and Title */}
       <div style={{ padding: '1rem' }}>
-        <h1>{nasa.title}</h1>
-        {nasa.media_type === 'image' && (
+        <h1>{currentPic.title}</h1>
+        {currentPic.media_type === 'image' && (
           <img
-            src={nasa.url}
-            alt={nasa.title}
+            src={currentPic.hdurl}
+            alt={currentPic.title}
             style={{ maxWidth: '100%', borderRadius: '10px' }}
           />
         )}
@@ -112,12 +175,8 @@ const Home = () => {
       {/* Section 2: Manually written educational content */}
       <div style={{ padding: '1rem', marginTop: '2rem' }}>
         <h2>Explanation</h2>
-        <p>
-          This stunning image captured by NASA shows the intricate details of
-          the Milky Way's core. The bright regions are densely packed with
-          stars, gas, and dust—home to both chaos and beauty in our galaxy.
-        </p>
-
+        {/* These need to be stored in variables so we can keep them in the db for later use ex: favorite img description */}
+        {currentPic.explanation}
         <h2>Historical Facts</h2>
         <p>
           The center of the Milky Way has fascinated astronomers for centuries.
@@ -132,9 +191,12 @@ const Home = () => {
           to studies in cosmology and radio astronomy.
         </p>
       </div>
-      <section id='favorites'>{favs}</section>
+      <section id='favorites'>{imgArr}</section>
     </div>
   );
+  {
+    /*Favorites */
+  }
 };
 
 export default Home;

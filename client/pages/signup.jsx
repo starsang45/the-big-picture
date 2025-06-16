@@ -36,8 +36,22 @@ const Signup = () =>{
     const redirectSignin = () =>{
         navigate('/');
     };
+
+
+    const backgroundStyle = {
+    backgroundImage: "url('https://cdn.mos.cms.futurecdn.net/rwow8CCG3C3GrqHGiK8qcJ-1200-80.jpg')",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
+  
     return (
-        <div>
+        <div style={backgroundStyle}>
+             <div>
             {/* Title */}
             <header>NASA Picture of Day</header>
 
@@ -73,7 +87,10 @@ const Signup = () =>{
                     <button id = 'back-to-signin' onClick={redirectSignin}>Back to Sign In</button>
                 </div>
             </div>      
+            </div>
+
         </div>
+       
     )
   
 };

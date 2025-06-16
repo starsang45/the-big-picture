@@ -11,9 +11,9 @@ app.use(express.static('./dist'));
 app.use(express.json());
 
 
-app.get('/', nasaController, (req, res) =>
-  res.status(200).json()
-);
+// app.get('/', nasaController, (req, res) =>
+//   res.status(200).json()
+// );
 
 
 // for image
