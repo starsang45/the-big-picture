@@ -26,3 +26,5 @@ const Signin = () => {
     </div>
   )
 };
+
+export default Signin;
