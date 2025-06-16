@@ -27,12 +27,13 @@ const Home = () => {
   // Fetches NASA data title and image
   // If the backend handles the NASA API request, change the URL to our server endpoint
   useEffect(() => {
-    // fetch('/api/nasa/apod')
-    fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY') //test
+    fetch('/api/nasa/apod')
+    // fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY') //test
       .then((res) => res.json())
       .then((data) => {
-        setCurrentPic(data);
+        setCurrentPic(data.data);
         setLoading(false);
+        console.log(data.data)
       })
       .catch((err) => {
         console.error('Failed to fetch data:', err);

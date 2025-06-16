@@ -19,7 +19,7 @@ const Signup = () =>{
     //if successful, navigate to home. otherwise, display an error.
     const handleSignup = async() =>{
         try{
-            const response = await fetch('/api/signup', { //POST to backend (/api/signup)
+            const response = await fetch('/api/auth/register', { //POST to backend (/api/signup)
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({ username, password })
