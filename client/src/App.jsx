@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Signin from '../pages/signin'; //importing from signin page
 import Signup from '../pages/signup'; //importing from signup page
 import Home from '../pages/home'; //importing from home page
-import Favs from '../pages/favorite'
+import Favs from '../pages/favorites'
 
 // import '../styles/styles.css' // theoretical css styles that can be added in when base project is complete
 
