@@ -1,4 +1,5 @@
 //import react from "react"// dont need it it gets pass down
+import {Link} from 'react-router-dom'
 
 const Home = ()=>{
 
@@ -12,7 +13,8 @@ const author = 'name'
 <div>
     <h2>{quotes}</h2>
     <h3>{author}</h3>
-    <button>the big picture</button>
+    <Link to='/Tbp'><button>the big picture</button></Link>
+    
 </div>
 
     )
