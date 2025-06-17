@@ -1,19 +1,28 @@
 //import react from "react"// dont need it it gets pass down
+import { useState } from 'react'
 import {Link} from 'react-router-dom'
 
 const Home = ()=>{
 
-//fetch for the qoutes 
-const quotes = ['one small step for man.']
-const author = 'name'
+    const [quote, setQuote] = useState({
+        quote:`That's one small step for a man, one giant leap for mankind`,
+        author : 'Neil Armstrong'
+    }
+    )
+
+    //later do useEffect to fectch the data
+    //build async fetch aWAIT . THEN 
+     //fetch for the qoutes 
+const quotes = [`That's one small step for a man, one giant leap for mankind`]
+const author = 'Neil Armstrong'
 
 
 
     return (
 <div>
-    <h2>{quotes}</h2>
-    <h3>{author}</h3>
-    <Link to='/Tbp'><button>the big picture</button></Link>
+    <h2>{quote.quote}</h2>
+    <h3>{quote.author}</h3>
+    <Link to='/Tbp'><button>See picture of the day</button></Link>
     
 </div>
 

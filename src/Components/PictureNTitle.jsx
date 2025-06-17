@@ -1,10 +1,14 @@
-export const PictureNTitle = () => {
+export const PictureNTitle = ({picOfDay}) => {
+
+//fetch req for image of the day 
+  //fetch req to a list imge multiple  image image of the day to map
   return (
     <div>
-      <img />
+      <img height='200px' src={picOfDay.url} alt='Nasa picture of the day'
+      />
       <div>
-        <h2>title</h2>
-        <p></p>
+        <h2>{picOfDay.title}</h2>
+        <p>{picOfDay.explanation}</p>
         <img />
       </div>
     </div>

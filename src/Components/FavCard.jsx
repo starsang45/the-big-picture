@@ -1,7 +1,7 @@
 export const FavCard = () => {
   return (
     <div>
-      <h2>favorites</h2>
+     
       <div>
         <h2>tittle of the image</h2>
         <button>to unseclet favotires</button>
@@ -12,4 +12,3 @@ export const FavCard = () => {
     </div>
   );
 };
-export default FavCard

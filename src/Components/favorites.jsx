@@ -4,8 +4,13 @@ import {FavCard} from  './FavCard'
 const Favorites = () => {
   return (
     <div>
+        
       <NavBar />
-      <FavCard/>
+      <div>
+         <h2>Favorites</h2>
+         <FavCard/>
+      </div>
+     
     </div>
   );
 };
