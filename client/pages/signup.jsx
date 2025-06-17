@@ -11,8 +11,8 @@ const Signup = () =>{
     const navigate = useNavigate();
 
     //set state to store form input
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState(null);
+    const [password, setPassword] = useState(null);
     const [error, setError] = useState('');
 
     //send a POST request to the backend with username and password

@@ -22,9 +22,9 @@ const Signin = () => {
         if (!res.ok) {
           throw new Error();
         }
-        navigate('/home')
       });
-    } catch (err) {};
+    } catch (err) {}
+    navigate('/home'); //need to take this out for real production type of build
   };
 
   const redirectSignup = () => {
