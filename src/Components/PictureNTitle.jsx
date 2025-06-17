@@ -11,3 +11,6 @@ export const PictureNTitle = () => {
   );
 };
 export default PictureNTitle;
+
+
+//component for center of tbp page

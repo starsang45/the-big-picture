@@ -4,6 +4,7 @@ import {createRoot} from 'react-dom/client'
 //import Signup from '../Old files/client/pages/signup'; //importing from signup page
 import Home from '/src/Components/home'; //importing from home page
 import Tbp from '/src/Components/Tbp'
+import Favorites from '/src/Components/favorites'
 
 
 
@@ -15,7 +16,7 @@ const App = () => {
       <Routes> {/* this defines the different pages we are going to be visiting without interrupting the code around it */}
         <Route path='/' element={<Home/>} /> {/* signin page nav */}
         <Route path='/Tbp' element={<Tbp />} /> signup page nav
-        {/* <Route path='/home' element={<Home />} /> home page nav */}
+        <Route path='/favorites' element={<Favorites />} /> home page nav
       </Routes>
     </BrowserRouter>
     // <div>'hello word</div>
