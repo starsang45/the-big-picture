@@ -1,17 +1,6 @@
-// quotes.js
-const mongoose = require('mongoose');
-const { Quote } = require('./server/nasaModel.cjs');
+// quotes.cjs
 
-// DB connect URI
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/scratch-project-axolotl';
-
-// connect Mong DB
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-const quotes = [
+module.exports = [
   {
     quote: "The cosmos is within us. We are made of star-stuff.",
     author: "Carl Sagan"
@@ -73,13 +62,3 @@ const quotes = [
     author: "Stephen Hawking"
   }
 ];
-
-// 5. insertMany array insert
-Quote.insertMany(quotes)
-  .then(() => {
-    console.log('✅ Quotes inserted successfully!');
-    mongoose.connection.close(); // DB connect end
-  })
-  .catch((err) => {
-    console.error(' Error inserting quotes:', err);
-  });
