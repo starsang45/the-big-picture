@@ -237,7 +237,7 @@ app.get('/api/nasa/favorites', requireAuth, nasaController.getFavorites, (req, r
     });
 });
 
-
+//dashboard router
 
 app.get('/dashboard', requireAuth, async (req, res) => {
     try {
@@ -274,4 +274,8 @@ app.use((err, req, res, next) => {
   return res.status(errorObj.status).json(errorObj.message);
 });
 
-app.listen(PORT, () => console.log(`listening on PORT: ${PORT}`));
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`listening on PORT: ${PORT}`));
+} else {
+  module.exports = app;
+}

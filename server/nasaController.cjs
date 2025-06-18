@@ -1,4 +1,5 @@
-const { NasaAuth, Favorite, Quote }  = require('./nasaModel.cjs')
+const { NasaAuth, Quote }  = require('./nasaModel.cjs')
+const Favorite = require('./favoriteModel.cjs'); 
 
 
 const NasaApiKey = process.env.NASA_API_KEY || 'k5Hkmgh4CmhCdPlUckSgnZyjDdNUw5yeXKSuK70X';
