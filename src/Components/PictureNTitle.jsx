@@ -11,7 +11,7 @@ export const PictureNTitle = ({ picOfDay, getStar }) => {
 
   return (
     <div className="flex gap-5">
-      <img className="size-100 rounded" src={picOfDay.url} alt="Nasa picture of the day" />
+      <img className="flex grow-2 max-h-200 rounded" src={picOfDay.url} alt="Nasa picture of the day" />
       <div className="border rounded p-5">
         <div className="flex justify-between">
           <h1 className="font-bold text-2xl">{picOfDay.title}</h1>
