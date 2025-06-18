@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema;
 
+//user schema
 const nasaSchema=  new Schema({
     username:{
         type: String,
@@ -22,6 +23,7 @@ const nasaSchema=  new Schema({
 
 });
 
+//hash password befor saving
 nasaSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
     
@@ -34,7 +36,12 @@ nasaSchema.pre('save', async function(next) {
     }
 });
 
-// fin user ny username
+// Instance method to compare passwords
+nasaSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
+// static method for login validation
 nasaSchema.statics.findByCredentials = async function(username, password) {
     try {
         const user = await this.findOne({ username: username 
@@ -57,6 +64,24 @@ nasaSchema.statics.findByCredentials = async function(username, password) {
 
 const NasaAuth = mongoose.model('nasaAuth', nasaSchema)
 
-module.exports = {NasaAuth}
-//mongoose.model('nasa', nasaSchema)//nasaAuth
+/* Quote Schema */
+
+const quoteSchema = new Schema({
+    quote: {
+        type: String,
+        default: 'some quote'
+    },
+    author: {
+        type: String,
+        default: 'Unknown'
+    }
+})
+
+const Quote = mongoose.model('quote', quoteSchema)
+
+module.exports = {
+    NasaAuth,
+    Quote
+};
+
 

@@ -69,9 +69,9 @@ const optionalAuth = (req, res, next) => {
 };
 
 app.get('/login',(req, res)=>{
-  if(res.session.userId){
+  if(req.session.userId){
     return res.redirect('/dashboard')
-  }res.render(login,{
+  }res.render('login',{
     error: req.session.error,
     message: req.session.message
   })
@@ -182,20 +182,21 @@ app.post('/api/auth/logout', (req, res) => {
 
 
 
-//get all data
-app.get('/api/nasa/apod', nasaController.getImageOfDay, (req, res) =>
+//get today's NASA apod all data, new endpoint here !!
+app.get('/api/nasa/one', nasaController.getImageOfDay, (req, res) =>
   res.status(200).json({
     success:true,
-    log:'Nasa data fetch succesfully',
+    log:'Today Nasa apod data fetch succesfully',
     data: res.locals.nasaData
   })
 );
 
-//get request for just the image
+//get only today's image URL
 app.get('/api/nasa/apod/image', nasaController.getImageOfDay, (req, res) =>
   res.status(200).json({
-    log: 'NASA data fetch successfully',
-    imageUrl: res.locals.nasaData.url  // Just the image URL
+    success: true,
+    message: 'NASA image URL fetched successfully',
+    imageUrl: res.locals.nasaData.url // Just the image URL
   })
 );
 
@@ -208,13 +209,15 @@ app.get('/api/nasa/apod/image', nasaController.getImageOfDay, (req, res) =>
 //rout to request the length of favortire images and actial image.
 //look to stash from the past in mango db
 //get favorites
-app.get('/api/nasa/favorites', requireAuth, nasaController.getFavorites, (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: 'Favorites retrieved successfully',
-        data: res.locals.favoritesData
-    });
-});
+
+//Get apod from the last 10 days
+app.get('/api/apod/prev', nasaController.getApodLast10Days, (req, res) =>
+  res.status(200).json({
+    success: true,
+    message: 'Last 10 days of NASA APODs fetched successfully',
+    data: res.locals.apodArray
+  })
+);
 
 //save favorites
 app.post('/api/nasa/favorites', requireAuth, nasaController.saveFavorites, (req, res) => {
@@ -224,6 +227,17 @@ app.post('/api/nasa/favorites', requireAuth, nasaController.saveFavorites, (req,
         data: res.locals.favoriteData
     });
 });
+
+//Get saved favorite image (requires login)
+app.get('/api/nasa/favorites', requireAuth, nasaController.getFavorites, (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Favorites retrieved successfully',
+        data: res.locals.favoritesData
+    });
+});
+
+//dashboard router
 
 app.get('/dashboard', requireAuth, async (req, res) => {
     try {
@@ -238,6 +252,16 @@ app.get('/dashboard', requireAuth, async (req, res) => {
     }
 });
 
+// Get a random quote for sign-in page
+app.get('/api/quote', nasaController.getRandomQuote, (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Random quote fetched successfully',
+    data: res.locals.quoteData
+  });
+});
+
+
 //global error handler
 app.use((err, req, res, next) => {
   const defaultErr = {
@@ -250,4 +274,8 @@ app.use((err, req, res, next) => {
   return res.status(errorObj.status).json(errorObj.message);
 });
 
-app.listen(PORT, () => console.log(`listening on PORT: ${PORT}`));
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`listening on PORT: ${PORT}`));
+} else {
+  module.exports = app;
+}
