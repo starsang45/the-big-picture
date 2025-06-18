@@ -1,23 +1,27 @@
-const NasaAuth = require('./nasaModel.cjs')
+const { NasaAuth, Favorite, Quote }  = require('./nasaModel.cjs')
 
 
 const NasaApiKey = process.env.NASA_API_KEY || 'k5Hkmgh4CmhCdPlUckSgnZyjDdNUw5yeXKSuK70X';
 
 //image request
 const nasaController = {
-async getImageOfDay (req, res, next ){
+//Get NASA Picture of the Day(APOD) for today
+ async getImageOfDay (req, res, next ){
     try{
        const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NasaApiKey}`)
          //const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY`)
 
         if(!response.ok){
-            throw{
+            throw {
                 log:'Error on fetching data',
                 status: 400,
                 message:{err: `NASA api error: ${response.status}`}
             }
         }
+
         const data = await response.json();
+
+        //store relevant data in res.locals for use in the response
         res.locals.nasaData = {
             
                 title :data.title,
@@ -33,15 +37,17 @@ async getImageOfDay (req, res, next ){
                     username: req.session.username
                 } : null
             };
+
         next()
-    }catch(error){
-         console.error('NASA Controller Error:', error);
-        next(error)
-    }
+    } catch (error) {
+        console.error('NASA Controller Error:', error);
+        next(error);
+    };
 },
-// saved favorites
+
+// saved favorite image to the database
 async saveFavorites(req,res,next){
-    try{
+    try {
         if (!req.session?.userId) {
                 throw {
                     log: 'User not authenticated',
@@ -59,8 +65,8 @@ async saveFavorites(req,res,next){
                     message: { err: 'Title, URL, and date are required' }
                 };
             }
-            
-            res.locals.favoriteData = {
+            // create and save new favorite in the database
+            const newFavorite = await Favorite.create({
                 userId: req.session.userId,
                 title,
                 url,
@@ -69,17 +75,17 @@ async saveFavorites(req,res,next){
                 date,
                 media_type: media_type || 'image',
                 username: req.session.username,
-                savedAt: new Date().toISOString(),
-            };
-            
-            next();
-            
+                savedAt: new Date()
+            })
+            res.locals.favoriteData = newFavorite;
+            next();        
         } catch (error) {
             console.error('NASA Controller Save Favorite Error:', error);
             next(error);
         }
 },
-// get favorites 
+
+// Retrieve a user's saved favorites
     async getFavorites(req, res, next) {
         try {
             if (!req.session?.userId) {
@@ -89,13 +95,15 @@ async saveFavorites(req,res,next){
                     message: { err: 'Authentication required to view favorites' }
                 };
             }
+        // Find favorites for the logged-in user, sorted by date
+        const favorites = await Favorite.find({userId: req.session.userId}).sort({ savedAt:-1 });
 
             // For now, return empty favorites (you can implement database storage later)
             res.locals.favoritesData = {
                 userId: req.session.userId,
                 username: req.session.username,
-                favorites: [],
-                count: 0
+                favorites,
+                count: favorites.length
             };
 
             next();
@@ -105,6 +113,73 @@ async saveFavorites(req,res,next){
             next(error);
         }
     },
+
+//Fetch apod from the last 10 days from NASA API
+    async getApodLast10Days(req, res, next) {
+    try {
+      const today = new Date();
+      const tenDaysAgo = new Date(today);
+      tenDaysAgo.setDate(today.getDate() - 10);
+
+      // Format dates to 'YYYY-MM-DD'
+      const formatDate = (date) => date.toISOString().split('T')[0];
+      const start_date = formatDate(tenDaysAgo);
+      const end_date = formatDate(today);
+
+      // Make request to NASA API for range of dates
+      const url = `https://api.nasa.gov/planetary/apod?api_key=${NasaApiKey}&start_date=${start_date}&end_date=${end_date}`;
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`NASA API error ${response.status}`);
+      }
+
+      const data = await response.json(); // Returns array of APODs
+      res.locals.apodArray = data;
+      next();
+    } catch (error) {
+      console.error('NASA Controller Get APOD Last 10 Days Error:', error);
+      next(error);
+    }
+  }
+
+};
+
+// const { Quote } = require('./nasaModel.cjs');
+
+// Controller to return a random quote
+const getRandomQuote = async (req, res, next) => {
+  try {
+    const count = await Quote.countDocuments();
+    if (count === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No quotes found in the database.'
+      });
+    }
+
+    const randomIndex = Math.floor(Math.random() * count);
+    const randomQuote = await Quote.findOne().skip(randomIndex);
+
+    res.locals.quoteData = {
+      quote: randomQuote.quote,
+      author: randomQuote.author
+    };
+
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error in getRandomQuote controller',
+      status: 500,
+      message: { err: 'Failed to retrieve quote of the day.' }
+    });
+  }
+};
+
+// module.exports = {
+//   ...module.exports,
+//   getRandomQuote
+// };
 
 
 // dont need this did it on the server file
@@ -140,5 +215,6 @@ async saveFavorites(req,res,next){
 //             });
 //         }
 //     }
-};
+
+nasaController.getRandomQuote = getRandomQuote;
 module.exports = nasaController;
