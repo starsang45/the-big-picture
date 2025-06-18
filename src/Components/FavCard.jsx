@@ -1,15 +1,12 @@
-export const FavCard = ({favPic}) => {
-
-
+export const FavCard = ({ title, url, explanation, date }) => {
   return (
     <div>
-     
-      <div>
-        <h2>tittle of the image</h2>
-        <button>to unseclet favotires</button>
-        <img  height = "50px"/>
-        <p> description of the image </p>
-        <h4> date of image</h4>
+      <div className="border rounded max-w-60 p-2">
+        <h2 className="text-2xl">{title}</h2>
+        <button className="border p-1">un-star</button>
+        <img className="w-50 h-50 object-contain rounded" src={url} />
+        {/* <p>{explanation}</p> */}
+        <h4>{date}</h4>
       </div>
     </div>
   );

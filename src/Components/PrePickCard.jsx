@@ -1,8 +1,3 @@
 export const PrePickCard = ({ pic }) => {
-//console.log(pic)
-
-
-  return <img height='100px' src={pic} />;
+  return <img className="w-50 h-50 object-contain rounded" height="100px" src={pic} />;
 };
-
-//logic for pic to load into the 

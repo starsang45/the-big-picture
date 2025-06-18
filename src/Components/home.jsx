@@ -1,31 +1,25 @@
-//import react from "react"// dont need it it gets pass down
-import { useState } from 'react'
-import {Link} from 'react-router-dom'
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const Home = ()=>{
+const Home = () => {
+  const [quote, setQuote] = useState({
+    quote: `That's one small step for a man, one giant leap for mankind`,
+    author: "Neil Armstrong",
+  });
 
-    const [quote, setQuote] = useState({
-        quote:`That's one small step for a man, one giant leap for mankind`,
-        author : 'Neil Armstrong'
-    }
-    )
+  const quotes = [`That's one small step for a man, one giant leap for mankind.`];
+  const author = "Neil Armstrong";
 
-    //later do useEffect to fectch the data
-    //build async fetch aWAIT . THEN 
-     //fetch for the qoutes 
-const quotes = [`That's one small step for a man, one giant leap for mankind`]
-const author = 'Neil Armstrong'
-
-
-
-    return (
-<div>
-    <h2>{quote.quote}</h2>
-    <h3>{quote.author}</h3>
-    <Link to='/Tbp'><button>See picture of the day</button></Link>
-    
-</div>
-
-    )
-}
-export default Home
+  return (
+    <div className="h-screen flex justify-center items-center">
+      <div className="flex-col items-center">
+        <h1 className="font-medium text-3xl italic">{quote.quote}</h1>
+        <h2 className="font-mono">{quote.author}</h2>
+        <Link to="/TBP">
+          <button className="border rounded px-4 py-2">Picture of the day</button>
+        </Link>
+      </div>
+    </div>
+  );
+};
+export default Home;

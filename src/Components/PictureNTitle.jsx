@@ -1,26 +1,28 @@
-export const PictureNTitle = ({picOfDay, getStar}) => {
+export const PictureNTitle = ({ picOfDay, getStar }) => {
+  const handleClick = () => {
+    const element = [picOfDay];
+    const Favs = JSON.parse(localStorage.getItem("Favorites"));
+    if (!localStorage.getItem("Favorites")) {
+      localStorage.setItem("Favorites", JSON.stringify([picOfDay]));
+    } else {
+      localStorage.setItem("Favorites", JSON.stringify([...Favs, picOfDay]));
+    }
+  };
 
-
-// const handleClick =()=>{
-//   getStar(picOfDay)
-  
-// }
-//fetch req for image of the day 
-  //fetch req to a list imge multiple  image image of the day to map
   return (
-    <div>
-      <img height='200px' src={picOfDay.url} alt='Nasa picture of the day'
-      />
-      <div>
-        <h2>{picOfDay.title}</h2>
+    <div className="flex gap-5">
+      <img className="size-100 rounded" src={picOfDay.url} alt="Nasa picture of the day" />
+      <div className="border rounded p-5">
+        <div className="flex justify-between">
+          <h1 className="font-bold text-2xl">{picOfDay.title}</h1>
+          <h4>{picOfDay.date}</h4>
+        </div>
         <p>{picOfDay.explanation}</p>
-        <button onClick={()=>{getStar(picOfDay)}}>star</button>
+        <button className="border rounded px-4 py-1" onClick={handleClick}>
+          star
+        </button>
       </div>
     </div>
   );
 };
 export default PictureNTitle;
-
-
-//component for center of tbp page
-//on click add the callback
