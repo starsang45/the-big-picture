@@ -183,7 +183,7 @@ app.post('/api/auth/logout', (req, res) => {
 
 
 //get today's NASA apod all data, new endpoint here !!
-app.get('/api/nasa/one', nasaController.getImageOfDay, (req, res) =>
+app.get('/api/apod/one', nasaController.getImageOfDay, (req, res) =>
   res.status(200).json({
     success:true,
     log:'Today Nasa apod data fetch succesfully',
