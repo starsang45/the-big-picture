@@ -5,7 +5,7 @@ export const NavBar = () => {
       <h1>The Big picture</h1>
       <img />
       <Link to='/Tbp'> <img /></Link>
-      <Link to='/favorites'><a>favorites</a></Link>
+      <Link to='/Favorites'><a>favorites</a></Link>
      
     </div>
   );

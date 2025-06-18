@@ -1,5 +1,5 @@
 export const PrePickCard = ({ pic }) => {
-console.log(pic)
+//console.log(pic)
 
 
   return <img height='100px' src={pic} />;

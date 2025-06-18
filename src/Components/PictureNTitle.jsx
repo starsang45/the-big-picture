@@ -18,3 +18,4 @@ export default PictureNTitle;
 
 
 //component for center of tbp page
+//on click add the callback

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { NavBar } from './NavBar';
 import { PictureNTitle } from './PictureNTitle';
 import { PreviousPic } from './PreviousPic';
+import {Favorites} from './Favorites'
+
 
 const TBP = () => {
   const [picOfDay, setPicOfDay] = useState({
@@ -19,18 +21,29 @@ const TBP = () => {
   //fetch req for image of the day
   //fetch req to a list imge multiple  image image of the day to map
   const [prePic, setPrePic] = useState([
+   
     picOfDay,
     picOfDay,
     picOfDay,
     picOfDay,
-    
+
   ]);
+//console.log('test',prePic)
+  //favorite and pass state into favv
+
+  const [favPic, setFavPic] = useState([
+    picOfDay,
+   picOfDay,
+   'happy'
+  ])
+  console.log('test1',favPic)
 
   return (
     <div>
       <NavBar />
       <PictureNTitle picOfDay={picOfDay} />
       <PreviousPic prePic={prePic} />
+      {/* <Favorites favPic={favPic} /> */}
     </div>
   );
 };
