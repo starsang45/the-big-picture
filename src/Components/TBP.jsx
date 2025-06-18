@@ -28,11 +28,13 @@ const TBP = ({ getStar }) => {
   ]);
 
   return (
-    <div>
-      <NavBar />
-      <div className=" m-5 flex-col justify-around">
-        <PictureNTitle picOfDay={picOfDay} getStar={getStar} />
-        <PreviousPic prePic={prePic} />
+    <div className="h-screen  bg-sky-950 text-slate-100 ">
+        <NavBar />
+      <div className="flex justify-center items-center">
+        <div className=" m-5 flex-col justify-around w-[50vw]">
+          <PictureNTitle picOfDay={picOfDay} getStar={getStar} />
+          <PreviousPic prePic={prePic} />
+        </div>
       </div>
     </div>
   );
