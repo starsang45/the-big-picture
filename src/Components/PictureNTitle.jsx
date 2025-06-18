@@ -1,9 +1,9 @@
 export const PictureNTitle = ({ picOfDay, getStar }) => {
   const handleClick = () => {
-    const element = [picOfDay];
+    
     const Favs = JSON.parse(localStorage.getItem("Favorites"));
     if (!localStorage.getItem("Favorites")) {
-      localStorage.setItem("Favorites", JSON.stringify([picOfDay]));
+      localStorage.setItem("Favorites", JSON.stringify([picOfDay])); 
     } else {
       localStorage.setItem("Favorites", JSON.stringify([...Favs, picOfDay]));
     }
