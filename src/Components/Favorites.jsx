@@ -13,7 +13,9 @@ export const Favorites = ({}) => {
   }
 
   useEffect(() => {
-    setFavsList(getFavs());
+    if (getFavs()) {
+      setFavsList(getFavs());
+    }
   }, []);
 
   function removeFav(element) {
