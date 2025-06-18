@@ -1,3 +1,7 @@
 export const PrePickCard = ({ pic }) => {
-  return <img className="w-50 h-50 object-contain rounded" height="100px" src={pic} />;
+  return <img className="aspect-square w-50 object-cover rounded-2xl" height="100px" src={pic.ur} />;
 };
+
+
+
+//on click call function with argument pic

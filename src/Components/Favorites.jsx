@@ -22,9 +22,10 @@ export const Favorites = ({}) => {
 
   return (
     <>
+    <div className="h-screen bg-sky-950">
       <NavBar />
-      <div className="m-5">
-        <h1 className="text-2xl font-bold">Favorites</h1>
+      <div className="h-screen m-5 bg-sky-950">
+        <h1 className="text-gray-50 4xl  font-bold ">Favorites</h1>
         <div className="flex gap-2  ">
           {favsList.map((el, index) => {
             return (
@@ -40,6 +41,7 @@ export const Favorites = ({}) => {
             );
           })}
         </div>
+      </div>
       </div>
     </>
   );

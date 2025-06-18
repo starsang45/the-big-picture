@@ -3,7 +3,7 @@ import { NavBar } from "./NavBar";
 import { PictureNTitle } from "./PictureNTitle";
 import { PreviousPic } from "./PreviousPic";
 
-const TBP = ({ getStar }) => {
+const TBP = () => {
   const [picOfDay, setPicOfDay] = useState({
     date: "2025-06-17",
     explanation:
@@ -27,12 +27,15 @@ const TBP = ({ getStar }) => {
     picOfDay,
   ]);
 
+// Create a handler function that sets the state to clicked picture - Pass this function to previous pic
+  // setState to picture
+
   return (
     <div className="h-screen  bg-sky-950 text-slate-100 ">
-        <NavBar />
-      <div className="h-full flex justify-center items-center">
+      <NavBar />
+      <div className="h-fill flex justify-center items-center">
         <div className=" m-5 flex-col justify-around w-[75vw]">
-          <PictureNTitle picOfDay={picOfDay} getStar={getStar} />
+          <PictureNTitle picOfDay={picOfDay} />
           <PreviousPic prePic={prePic} />
         </div>
       </div>
@@ -40,3 +43,5 @@ const TBP = ({ getStar }) => {
   );
 };
 export default TBP;
+
+

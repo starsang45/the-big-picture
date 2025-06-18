@@ -1,11 +1,17 @@
-import{Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 export const NavBar = () => {
   return (
-    <div className="flex justify-between m-5">
-      <Link to="/TBP"><h1>📸 The Big picture</h1></Link>
-      {/* <img /> */}
-      <Link to='/TBP'> <img /></Link>
-      <Link to='/Favorites'><h2>Favorites</h2></Link>
+    <div className="flex justify-between m-5 text-slate-100">
+      <Link to="/TBP" className="w-60">
+        <img src="src/Assets/TBP_wordmark.png" />
+      </Link>
+      <Link to="/TBP">
+        {" "}
+        <img />
+      </Link>
+      <Link to="/Favorites">
+        <h2 className="text-2xl font-medium">Favorites</h2>
+      </Link>
     </div>
   );
 };
