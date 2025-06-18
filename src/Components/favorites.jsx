@@ -1,8 +1,8 @@
 import { NavBar } from './NavBar';
 import { FavCard } from './FavCard';
 
-export const Favorites = ({ favPic}) => {
-  console.log('test3', favPic);
+export const Favorites = ({favorites}) => {
+console.log(favorites)
   
   
   return (
@@ -11,7 +11,7 @@ export const Favorites = ({ favPic}) => {
       <div>
         <h2>Favorites Page</h2>
 
-        {/* {favPic.map((el, index) => {
+        {/* {favorites.map((el, index) => {
           console.log('test2', el);
           return (
             <FavCard

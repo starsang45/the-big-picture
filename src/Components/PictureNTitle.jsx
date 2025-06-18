@@ -1,5 +1,10 @@
-export const PictureNTitle = ({picOfDay}) => {
+export const PictureNTitle = ({picOfDay, getStar}) => {
 
+
+// const handleClick =()=>{
+//   getStar(picOfDay)
+  
+// }
 //fetch req for image of the day 
   //fetch req to a list imge multiple  image image of the day to map
   return (
@@ -9,7 +14,7 @@ export const PictureNTitle = ({picOfDay}) => {
       <div>
         <h2>{picOfDay.title}</h2>
         <p>{picOfDay.explanation}</p>
-        <img />
+        <button onClick={()=>{getStar(picOfDay)}}>star</button>
       </div>
     </div>
   );
