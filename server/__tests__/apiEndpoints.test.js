@@ -5,7 +5,7 @@ describe('API Endpoint Tests', () => {
   // Allow longer timeout for NASA API responses
   jest.setTimeout(10000);
 
-  // Test: GET /api/apod/one should return today's APOD
+  // Test: API fetch for one picture
   test('GET /api/apod/one - should return today\'s APOD', async () => {
     const res = await request(app).get('/api/apod/one');
 
@@ -16,7 +16,7 @@ describe('API Endpoint Tests', () => {
     expect(res.body.data).toHaveProperty('url');
   });
 
-  // Test: GET /api/apod/prev should return a list of previous APODs
+  // Test: API fetch for many picture
   test('GET /api/apod/prev - should return last 10 days of APODs', async () => {
     const res = await request(app).get('/api/apod/prev');
 
