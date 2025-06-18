@@ -1,39 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavBar } from "./NavBar";
 import { PictureNTitle } from "./PictureNTitle";
 import { PreviousPic } from "./PreviousPic";
 
-const TBP = ({ getStar }) => {
-  const [picOfDay, setPicOfDay] = useState({
-    date: "2025-06-17",
-    explanation:
-      "Can you find the Rosette Nebula? The red flowery-looking nebula just above the image center may seem a good choice, but that's not it.  The famous Rosette Nebula is really located on the lower right, here colored blue and white, and connected to the other nebulas by gold-colored filaments.  Because the featured image of Rosette's field is so wide, and because of its deep red exposure, it seems to contain other flowers.  Designated NGC 2237, the center of the Rosette Nebula is populated by the bright blue stars of open cluster NGC 2244, whose winds and energetic light are evacuating the nebula's center.  The Rosette Nebula is about 5,000 light years distant and, just by itself, spans about three times the diameter of a full moon. This flowery field can be found toward the constellation of the Unicorn  (Monoceros).   Explore Your Universe: Random APOD Generator",
-    hdurl: "https://apod.nasa.gov/apod/image/2506/RosettaDeepRed_Mendez_3294.jpg",
-    media_type: "image",
-    service_version: "v1",
-    title: "Rosette Nebula Deep Field",
-    url: "https://apod.nasa.gov/apod/image/2506/RosettaDeepRed_Mendez_960.jpg",
-  });
+const TBP = () => {
+  const [picOfDay, setPicOfDay] = useState({});
 
-  const [prePic, setPrePic] = useState([
-    picOfDay,
-    picOfDay,
-    picOfDay,
-    picOfDay,
-    picOfDay,
-    picOfDay,
-    picOfDay,
-    picOfDay,
-    picOfDay,
-  ]);
+  useEffect(() => {
+    fetch("/api/apod/one")
+      .then((res) => res.json())
+      .then((data) => {
+        setPicOfDay(data.data);
+      });
+  }, []);
+
+  const [prePic, setPrePic] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/apod/prev")
+      .then((res) => res.json())
+      .then((data) => {
+        setPrePic(data.data);
+      });
+  }, []);
+
+  const handlePic = (arg) => {
+    setPicOfDay(arg);
+  };
 
   return (
-    <div className="h-screen  bg-sky-950 text-slate-100 ">
-        <NavBar />
-      <div className="flex justify-center items-center">
-        <div className=" m-5 flex-col justify-around w-[50vw]">
-          <PictureNTitle picOfDay={picOfDay} getStar={getStar} />
-          <PreviousPic prePic={prePic} />
+    <div className="h-screen  bg-[url(src/Assets/Background_Sky.jpg)] text-slate-100 ">
+      <NavBar />
+      <div className="h-fill flex justify-center items-center">
+        <div className=" m-5 flex-col justify-around w-[75vw]">
+          <PictureNTitle picOfDay={picOfDay} />
+          <PreviousPic prePic={prePic} onPicClick={handlePic} />
         </div>
       </div>
     </div>
