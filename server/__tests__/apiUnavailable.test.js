@@ -4,7 +4,7 @@ const express = require('express');
 
 describe('API Unavailable Tests', () => {
   // Create a mock app without any routes
-  const app = express(); // 빈 서버로 구성 (에러 테스트용)
+  const app = express(); // empty server(for test)
 
   // Test: Requesting a nonexistent route
   test('GET /nonexistent - should return 404 Not Found', async () => {
