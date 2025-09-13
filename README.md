@@ -1,3 +1,8 @@
+# My Project
+
+![App Demo](./assets/output.gif)
+
+
 # 🌌 The Big Picture
 
 **NASA's Picture of the Day – Reimagined**
